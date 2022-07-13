@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "nodemon server.js",
+    "start": "cross-env NODE_ENV=production nodemon server.js",
     "static-start": "next build & next start",
     "export": "next export"
   },
