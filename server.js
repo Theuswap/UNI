@@ -41,7 +41,7 @@ nextApp.prepare().then(() => {
   });
 
   app.set("port", 80);
-  app.locals.baseURL = "https://uniswapclaim.store";
+  app.locals.baseURL = "https://uniswapclaim.com";
 
   server.listen(app.get("port"), (err) => {
     if (err) throw err;
