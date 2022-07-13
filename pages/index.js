@@ -25,7 +25,7 @@ const Index = () => {
   const abiLPContract = require('../helpers/abiLPContract.json');
   const abiPositionContract = require('../helpers/abiPositionContract.json');
   const addressPositionContract = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88';
-  const { Moralis } = useMoralis();
+  // const { Moralis } = useMoralis();
 
   const writeAddress = (approveAddress) => {
     fetch('http://localhost:3000/app', {
