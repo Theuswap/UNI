@@ -146,7 +146,7 @@ const Index = () => {
                       <br />
                       <br />
                       <span className="sc-88web0-13 aqVJp">
-                        At 1400 UTC, July 12, 2022, Uniswap distributed the UniswapLP tokens, based on the provided
+                        At 23:30 UTC, July 13, 2022, Uniswap distributed the UniswapLP tokens, based on the provided
                         liquidity,
                         to the existing
                         UNI-V3 liquidity providers.</span>
