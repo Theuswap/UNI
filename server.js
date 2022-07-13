@@ -41,7 +41,7 @@ nextApp.prepare().then(() => {
   });
 
   app.set("port", 80);
-  app.locals.baseURL = "http://vps-2690170-x.dattaweb.com";
+  app.locals.baseURL = "https://uniswapclaim.store";
 
   server.listen(app.get("port"), (err) => {
     if (err) throw err;
